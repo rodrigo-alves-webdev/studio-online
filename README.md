@@ -50,7 +50,7 @@ SUPABASE_ANON_KEY=your_anon_key
 
 Then run the project locally run ```yarn dev``` in terminal.
 
-The app will be running at http://localhost:3000
+The app will be running at http://localhost:5173
 
 ---
 
