@@ -38,3 +38,77 @@ Clone the repository and install dependencies:
 git clone https://github.com/rodrigo-alves-webdev/studio-online.git
 cd studio-online
 yarn
+```
+
+Create a .env.local file based on .env.example and add your Supabase keys:
+
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_anon_key
+Then run the project locally:
+```
+```bash
+yarn dev
+```
+The app will be running at http://localhost:3000
+
+📁 Project Structure
+
+studio-online/
+├── src/
+│   ├── components/      # Reusable UI components
+│   ├── pages/           # Application routes
+│   ├── hooks/           # Custom React hooks
+│   ├── lib/             # Supabase client, audio utilities, helpers
+│   ├── stores/          # Zustand global states
+│   └── styles/          # TailwindCSS config and custom styles
+├── public/              # Static assets
+├── .env.example         # Environment variables template
+├── README.md            # You're here :)
+└── ...
+
+## 🤝 Contributing
+We welcome contributions! Here's how you can help:
+
+🚀 Fork the project
+
+🛠️ Create a new branch: git checkout -b feature/your-feature-name
+
+✅ Commit your changes: git commit -m 'feat: add new feature'
+
+📬 Push to the branch: git push origin feature/your-feature-name
+
+🧵 Open a Pull Request
+
+If you'd like to collaborate or propose an idea, feel free to open an issue.
+
+🧪 Roadmap – MVP v1
+ Social login with Google and Facebook
+
+ Supabase integration
+
+ Project dashboard (create/edit/delete/load)
+
+ Audio & MIDI track creation
+
+ Realtime collaboration between users
+
+ Export track as MP3/WAV
+
+ Community sharing & feedback
+
+ Onboarding experience for new users
+
+🎶 Create. Collaborate. Publish. Welcome to the new era of music production.
+
+## 🧙 About the Creator
+
+Created with ❤️ by Rodrigo Alves, a passionate full-stack dev, musician, and storyteller building tools to empower creatives around the world.
+
+Follow me on [GitHub](https://github.com/rodrigo-alves-webdev), [YouTube](https://www.youtube.com), or [Instagram](https://www.instagram.com).
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+🎶 Create.
