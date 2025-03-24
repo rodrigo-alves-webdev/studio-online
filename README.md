@@ -45,15 +45,18 @@ Create a .env.local file based on .env.example and add your Supabase keys:
 ```env
 SUPABASE_URL=your_supabase_url
 SUPABASE_ANON_KEY=your_anon_key
-Then run the project locally:
+
 ```
-```bash
-yarn dev
-```
+
+Then run the project locally run ```yarn dev``` in terminal.
+
 The app will be running at http://localhost:3000
 
-📁 Project Structure
+---
 
+## 📁 Project Structure
+
+```bash
 studio-online/
 ├── src/
 │   ├── components/      # Reusable UI components
@@ -66,6 +69,9 @@ studio-online/
 ├── .env.example         # Environment variables template
 ├── README.md            # You're here :)
 └── ...
+```
+
+---
 
 ## 🤝 Contributing
 We welcome contributions! Here's how you can help:
@@ -82,30 +88,31 @@ We welcome contributions! Here's how you can help:
 
 If you'd like to collaborate or propose an idea, feel free to open an issue.
 
-🧪 Roadmap – MVP v1
- Social login with Google and Facebook
+---
 
- Supabase integration
+## 🧪 Roadmap – MVP v1
 
- Project dashboard (create/edit/delete/load)
+Here's what's planned for our MVP release:
 
- Audio & MIDI track creation
+- ✅ 🔐 **Social login** with Google and Facebook  
+- ✅ 🧰 **Supabase integration** for auth, database and realtime  
+- 🚧 🗂️ **Project dashboard** — create, edit, delete, and load music projects  
+- 🚧 🎹 **Audio & MIDI track creation** — add instruments, loops, and sequences  
+- 🔜 🤝 **Realtime collaboration** — invite friends and produce music together  
+- 🔜 📤 **Export to MP3/WAV** — download your full mix  
+- 🔜 🌍 **Community sharing & feedback** — publish tracks, get likes and comments  
+- 🔜 🚀 **Onboarding experience** — guided first project and tooltips for beginners
 
- Realtime collaboration between users
 
- Export track as MP3/WAV
-
- Community sharing & feedback
-
- Onboarding experience for new users
-
-🎶 Create. Collaborate. Publish. Welcome to the new era of music production.
+---
 
 ## 🧙 About the Creator
 
 Created with ❤️ by Rodrigo Alves, a passionate full-stack dev, musician, and storyteller building tools to empower creatives around the world.
 
 Follow me on [GitHub](https://github.com/rodrigo-alves-webdev), [YouTube](https://www.youtube.com), or [Instagram](https://www.instagram.com).
+
+---
 
 ## 📄 License
 

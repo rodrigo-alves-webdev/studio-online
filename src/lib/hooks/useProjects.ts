@@ -1,31 +1,47 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
 import { useAuth } from '../auth';
-import type { Database } from '../supabase-types';
 
-export type Project = Database['public']['Tables']['projects']['Row'];
+interface Project {
+  id: string;
+  name: string;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface ProjectUpdate {
+  name?: string;
+}
 
 export function useProjects() {
-  const { user } = useAuth();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
     if (user) {
       fetchProjects();
+    } else {
+      setProjects([]);
+      setLoading(false);
     }
   }, [user]);
 
   async function fetchProjects() {
     try {
       setLoading(true);
+      
       const { data, error } = await supabase
         .from('projects')
         .select('*')
-        .eq('owner_id', user?.id)
+        .eq('user_id', user?.id)
         .order('updated_at', { ascending: false });
-
-      if (error) throw error;
+      
+      if (error) {
+        throw error;
+      }
+      
       setProjects(data || []);
     } catch (error) {
       console.error('Erro ao buscar projetos:', error);
@@ -34,18 +50,29 @@ export function useProjects() {
     }
   }
 
-  async function createProject(name: string = 'Novo Projeto') {
+  async function createProject() {
+    if (!user) throw new Error('Usuário não autenticado');
+    
     try {
+      // Projetos novos começam com um nome padrão
+      const newProject = {
+        name: 'Novo Projeto',
+        user_id: user.id,
+      };
+      
       const { data, error } = await supabase
         .from('projects')
-        .insert([
-          { name, owner_id: user!.id }
-        ])
+        .insert(newProject)
         .select()
         .single();
-
-      if (error) throw error;
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Atualiza a lista de projetos localmente
       setProjects([data, ...projects]);
+      
       return data;
     } catch (error) {
       console.error('Erro ao criar projeto:', error);
@@ -53,15 +80,22 @@ export function useProjects() {
     }
   }
 
-  async function updateProject(id: string, updates: Partial<Project>) {
+  async function updateProject(id: string, updates: ProjectUpdate) {
     try {
       const { error } = await supabase
         .from('projects')
-        .update(updates)
-        .eq('id', id);
-
-      if (error) throw error;
-      setProjects(projects.map(p => p.id === id ? { ...p, ...updates } : p));
+        .update({ ...updates, updated_at: new Date().toISOString() })
+        .eq('id', id)
+        .eq('user_id', user?.id);
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Atualiza o projeto na lista local
+      setProjects(projects.map(project => 
+        project.id === id ? { ...project, ...updates, updated_at: new Date().toISOString() } : project
+      ));
     } catch (error) {
       console.error('Erro ao atualizar projeto:', error);
       throw error;
@@ -73,10 +107,15 @@ export function useProjects() {
       const { error } = await supabase
         .from('projects')
         .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-      setProjects(projects.filter(p => p.id !== id));
+        .eq('id', id)
+        .eq('user_id', user?.id);
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Remove o projeto da lista local
+      setProjects(projects.filter(project => project.id !== id));
     } catch (error) {
       console.error('Erro ao excluir projeto:', error);
       throw error;
@@ -89,6 +128,6 @@ export function useProjects() {
     createProject,
     updateProject,
     deleteProject,
-    refresh: fetchProjects
+    refreshProjects: fetchProjects
   };
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { Music } from 'lucide-react';
 import { AuthModal } from './components/auth/AuthModal';
 import { Dashboard } from './pages/Dashboard';
@@ -8,9 +8,22 @@ import { useAuth } from './lib/auth';
 function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { user, profile, signOut } = useAuth();
-
-  return (
-    <Router>
+  
+  // Este é um componente envolvente para usar o hook useNavigate
+  const AppContent = () => {
+    const navigate = useNavigate();
+    
+    const handleSignOut = async () => {
+      try {
+        await signOut();
+        // Após o logout, redirecionamos para a página inicial
+        navigate('/');
+      } catch (error) {
+        console.error("Erro ao fazer logout:", error);
+      }
+    };
+    
+    return (
       <div className="min-h-screen bg-gray-900">
         <nav className="bg-gray-800 border-b border-gray-700">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,7 +52,7 @@ function App() {
                   <div className="flex items-center space-x-4">
                     <span className="text-gray-300">{profile?.name}</span>
                     <button
-                      onClick={() => signOut()}
+                      onClick={handleSignOut}
                       className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     >
                       Sair
@@ -97,6 +110,13 @@ function App() {
           onClose={() => setIsAuthModalOpen(false)}
         />
       </div>
+    );
+  };
+  
+  // Retorna o Router com o componente envolvente
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

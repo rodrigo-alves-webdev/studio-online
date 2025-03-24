@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../../lib/auth';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const { signIn, signUp } = useAuth();
+  const navigate = useNavigate();
 
   if (!isOpen) return null;
 
@@ -27,6 +29,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         await signUp(email, password, name);
       }
       onClose();
+      navigate('/projects'); // Redireciona para a página de projetos após autenticação
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ocorreu um erro');
     }
@@ -106,14 +109,28 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
           <div className="grid grid-cols-2 gap-4">
             <button
               type="button"
-              onClick={() => signIn.google()}
+              onClick={async () => {
+                try {
+                  await signIn.google();
+                  navigate('/projects');
+                } catch (err) {
+                  setError(err instanceof Error ? err.message : 'Ocorreu um erro com login Google');
+                }
+              }}
               className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
             >
               Google
             </button>
             <button
               type="button"
-              onClick={() => signIn.facebook()}
+              onClick={async () => {
+                try {
+                  await signIn.facebook();
+                  navigate('/projects');
+                } catch (err) {
+                  setError(err instanceof Error ? err.message : 'Ocorreu um erro com login Facebook');
+                }
+              }}
               className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
             >
               Facebook
